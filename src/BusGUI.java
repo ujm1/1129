@@ -1,12 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
+
 //test
 public class BusGUI extends JFrame {
     JPanel jpanel;
     JTextArea listArea; //대기중인 버스. area로 하니 안되다가 field로 바꾸니 정상
     JTextArea almostArea; //잠시후도착
 
-    BusGUI() {init();}
+    BusGUI() {
+        init();
+    }
 
     void init() {
         this.setTitle("버스 대기판");
@@ -20,30 +23,37 @@ public class BusGUI extends JFrame {
 //        jpanel.add(listArea);
 //        jpanel.add(almostArea);
 //        this.add(jpanel);
-        JScrollPane topScrollPane= new JScrollPane(listArea);
-        JScrollPane bottomScrollPane= new JScrollPane(almostArea);
+        JScrollPane topScrollPane = new JScrollPane(listArea);
+        JScrollPane bottomScrollPane = new JScrollPane(almostArea);
         this.add(topScrollPane);
         this.add(bottomScrollPane);
 //        getContentPane().add(jpanel, BorderLayout.CENTER);
         this.setVisible(true);
     }
-    public void topDisplay(String str) {
+
+    public void display(String str) {
+
+        if (str.length() > 4) {
+            listArea.setText("\n" + str);
+        }
         // JTextArea에 데이터를 출력
 
-        listArea.append("\n"+str);
+//        listArea.append("\n"+str);
 //                listArea.setText("\n"+str);
-//
-    }
-    public void bottomDisplay(String str) {
-        if (str != null && str.length()>=3) {
-            almostArea.append("\n"+str.substring(0, 3));
-
+        else if (str.length() <= 3) {
+            almostArea.setText("\n" + str.substring(0, 3));
         }
     }
+//    public void bottomDisplay(String str) {
+//        if (str != null && str.length()>=3) {
+////            almostArea.append("\n"+str.substring(0, 3));
+//            almostArea.setText("\n"+str.substring(0, 3));
+//
+//        }
 
 
     public static void main(String[] args) {
-        BusGUI busGUI=new BusGUI();
+        BusGUI busGUI = new BusGUI();
     }
 
 }
