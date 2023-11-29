@@ -24,6 +24,7 @@ public class BusServerThread extends Thread {
                 String fromClient = br.readLine();
                 System.out.println(fromClient);
                 busGUI.display(fromClient);
+
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();

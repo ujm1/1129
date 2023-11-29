@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 //test
 public class BusGUI extends JFrame {
@@ -32,33 +34,65 @@ public class BusGUI extends JFrame {
     }
 
     public void display(String str) {
+        int numIndex=str.indexOf("번");
+        String busNum = str.substring(0, numIndex); //100번:~~에서 100 뽑기;
+        if (str.contains(":")) {
+            delTopDuple(str, busNum); //중복 확인 후 제거
+            listArea.append("\n" + str); //위 칸에 출력하기
+            int minuteIndex = str.indexOf("분");
+            int minuteNum = Integer.parseInt(str.substring(numIndex+2, minuteIndex));
+            //~~번:3분~~에서 3 뽑기
+            if (minuteNum == 0) {
+                almostArea.append("\n" + busNum);
+            } //0분일때(도착 예정 시간 1분 미만일때) 아래칸에 출력하기
 
-        if(str.contains(":")) {
-            int colonIndex=str.indexOf(":");
-            String busNum=str.substring(0,colonIndex-1);
-            listArea.append("\n"+str);
-            int minuteIndex=str.indexOf("분");
-            int minuteNum=Integer.parseInt(str.substring(colonIndex+1,minuteIndex));
-            if(minuteNum==0) {
-                almostArea.append("\n"+busNum);
-            }
 
-
-        } else if (!str.contains(":")&&str!=null) {
+        } else if (!str.contains(":") && str != null) {
             //~번 버스가 도착했습니다, ~번 버스가 지나갔습니다
-            listArea.append("\n" + str);}
+            delTopDuple(str, busNum);
+            listArea.append("\n" + str); //위 칸에 출력하기
+        }
+    }
+
+    public void delTopDuple(String str, String busNum) {
+        if (listArea!=null) {
+            String[] lines = listArea.getText().split("\n");
+            String resultText="";
+            for (String line : lines) {
+                if (!line.contains(busNum)) {
+//                    line.replaceAll("");
+                   resultText+= line+"\n";
+                }
+            } resultText = resultText.trim();
+//            String.join("\n", lines);
+            listArea.setText(resultText);
+        }
+    }
+
+
+//        String[] lines = listArea.getText().split("\n");
+//        StringBuilder newListArea = new StringBuilder();
+
+//        for (String line : lines) {
+//            if (!line.contains(busNum)) {
+//                newListArea.append(line).append("\n");
+//            }
+//        }
+//
+//        listArea.setText(newListArea.toString());
+
 
 //        if (str.length() > 4) {
 //            listArea.append("\n" + str);
 //        }
-        // JTextArea에 데이터를 출력
+    // JTextArea에 데이터를 출력
 
 //        listArea.append("\n"+str);
 //                listArea.setText("\n"+str);
 //        else if (str.length() <= 3) {
 //            almostArea.setText("\n" + str.substring(0, 3));
 //        }
-    }
+
 //    public void bottomDisplay(String str) {
 //        if (str != null && str.length()>=3) {
 ////            almostArea.append("\n"+str.substring(0, 3));

@@ -8,6 +8,7 @@ public class Bus extends Thread {
         this.time = time;
     }
 
+
     public int getNumber() {
         return number;
     }
