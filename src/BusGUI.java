@@ -54,6 +54,8 @@ public class BusGUI extends JFrame {
         }
     }
 
+
+
     public void delTopDuple(String str, String busNum) {
         if (listArea!=null) {
             String[] lines = listArea.getText().split("\n");
