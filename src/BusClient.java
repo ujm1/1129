@@ -24,13 +24,9 @@ public class BusClient extends Thread {
                 String str2 = "";
 
                 if (bus.getTime() > 0) {
-                    str1 = bus.getNumber() + "번 버스가 정류장에 " +
-                            "도착하기까지 " +
-                            "남은 시간: " + bus.getTime() / 60 + "분 "
+                    str1 = bus.getNumber() + "번:" + bus.getTime() / 60 + "분 "
                             + bus.getTime() % 60 + "초";
-                    if (bus.getTime() / 60 == 0) {
-                        str2 = bus.getNumber() + "번";
-                    }
+
                 } else if (bus.getTime() == 0) {
                     str1 = bus.getNumber() + "번 버스가 도착했습니다";
                 } else if (bus.getTime() < 0) {
@@ -43,18 +39,10 @@ public class BusClient extends Thread {
                 bw.flush();
                 bus.setTime(bus.getTime() - SECOND);
 
-                Thread.sleep(1);
 
-                if (!str2.isEmpty()) {
-                    bw.write(str2);
-                    bw.newLine();
-                    bw.flush();
-                }
 
                 System.out.println(str1);
-                if (!str2.isEmpty()) {
-                    System.out.println(str2);
-                }
+
 
                 Thread.sleep(SECOND * 1000);
             }

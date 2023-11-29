@@ -33,16 +33,31 @@ public class BusGUI extends JFrame {
 
     public void display(String str) {
 
-        if (str.length() > 4) {
-            listArea.setText("\n" + str);
-        }
+        if(str.contains(":")) {
+            int colonIndex=str.indexOf(":");
+            String busNum=str.substring(0,colonIndex-1);
+            listArea.append("\n"+str);
+            int minuteIndex=str.indexOf("분");
+            int minuteNum=Integer.parseInt(str.substring(colonIndex+1,minuteIndex));
+            if(minuteNum==0) {
+                almostArea.append("\n"+busNum);
+            }
+
+
+        } else if (!str.contains(":")&&str!=null) {
+            //~번 버스가 도착했습니다, ~번 버스가 지나갔습니다
+            listArea.append("\n" + str);}
+
+//        if (str.length() > 4) {
+//            listArea.append("\n" + str);
+//        }
         // JTextArea에 데이터를 출력
 
 //        listArea.append("\n"+str);
 //                listArea.setText("\n"+str);
-        else if (str.length() <= 3) {
-            almostArea.setText("\n" + str.substring(0, 3));
-        }
+//        else if (str.length() <= 3) {
+//            almostArea.setText("\n" + str.substring(0, 3));
+//        }
     }
 //    public void bottomDisplay(String str) {
 //        if (str != null && str.length()>=3) {
