@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 //test
-public class BusGUI extends JFrame {
+public class BusGUI extends JFrame {//
     JPanel jpanel;
     JTextArea listArea; //대기중인 버스. area로 하니 안되다가 field로 바꾸니 정상
     JTextArea almostArea; //잠시후도착
