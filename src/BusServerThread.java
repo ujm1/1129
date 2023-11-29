@@ -5,9 +5,11 @@ import java.net.Socket;
 
 public class BusServerThread extends Thread {
     private Socket socket;
+    private BusGUI busGUI;
 
-    public BusServerThread(Socket socket) {
+    public BusServerThread(Socket socket, BusGUI busGUI) {
         this.socket = socket;
+        this.busGUI= busGUI;
     }
 
     @Override
@@ -16,7 +18,7 @@ public class BusServerThread extends Thread {
                 InputStreamReader isr = new InputStreamReader(socket.getInputStream());
                 BufferedReader br = new BufferedReader(isr)
         ) {
-            BusGUI busGUI = new BusGUI();
+
 
             while (true) {
                 String fromClient = br.readLine();

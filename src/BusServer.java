@@ -10,13 +10,13 @@ public class BusServer {
         try {
             ss = new ServerSocket(36129);
             System.out.println("서버 준비");
+            BusGUI busGUI=new BusGUI();
 
             while (true) {
                 Socket socket = ss.accept();
                 System.out.println(socket.getInetAddress() + "연결됨");
-
                 // Start a new thread for each client
-                new BusServerThread(socket).start();
+                new BusServerThread(socket, busGUI).start();
             }
 
         } catch (IOException ioe) {
