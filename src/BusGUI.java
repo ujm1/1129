@@ -20,7 +20,7 @@ public class BusGUI extends JFrame {
         this.setLayout(new GridLayout(2, 1));
         this.setLocationRelativeTo(null); //화면 중앙에 표시
 //        jpanel = new JPanel(new GridLayout(2, 1));
-        listArea = new JTextArea("버스 현황");
+        listArea = new JTextArea("버스 현황\n100번\n200번");
         almostArea = new JTextArea("잠시 후 도착");
 //        jpanel.add(listArea);
 //        jpanel.add(almostArea);
@@ -38,7 +38,7 @@ public class BusGUI extends JFrame {
         String busNum = str.substring(0, numIndex); //100번:~~에서 100 뽑기;
         if (str.contains(":")) {
             delTopDuple(str, busNum); //중복 확인 후 제거
-            listArea.append("\n" + str); //위 칸에 출력하기
+
             int minuteIndex = str.indexOf("분");
             int minuteNum = Integer.parseInt(str.substring(numIndex+2, minuteIndex));
             //~~번:3분~~에서 3 뽑기
@@ -50,7 +50,7 @@ public class BusGUI extends JFrame {
         } else if (!str.contains(":") && str != null) {
             //~번 버스가 도착했습니다, ~번 버스가 지나갔습니다
             delTopDuple(str, busNum);
-            listArea.append("\n" + str); //위 칸에 출력하기
+
         }
     }
 
@@ -61,10 +61,10 @@ public class BusGUI extends JFrame {
             String[] lines = listArea.getText().split("\n");
             String resultText="";
             for (String line : lines) {
-                if (!line.contains(busNum)) {
+                if (line.contains(busNum)) {
 //                    line.replaceAll("");
+                    line=str;}
                    resultText+= line+"\n";
-                }
             } resultText = resultText.trim();
 //            String.join("\n", lines);
             listArea.setText(resultText);
