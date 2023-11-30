@@ -82,22 +82,9 @@ public class BusGUI extends JFrame {
 
     //0분이고 : 있을때 ex. "100번:0분 10초"
     public void displayBot(String str, String busNum) {
-        if (!botArea.getText().contains(busNum)) {
+        if (!botArea.getText().contains(busNum)) { //해당 버스의 이전 기록이 있을 때
             botArea.append("\n" + busNum); //버스 번호만 출력
         }
-
-//        else if (botArea.getText().contains(busNum)) { //해당 버스의 이전 기록이 있을 때
-//            String[] lines = botArea.getText().split("\n");
-//            String resultText = "";
-//            for (String line : lines) {
-//                if (line.contains(busNum)) {
-//                    line = busNum; //버스 번호가 포함된 줄만 변경
-//                }
-//                resultText += line + "\n";
-//            }
-//            resultText = resultText.trim();
-//            botArea.setText(resultText);
-//        }
     } //displayBot
 
 
