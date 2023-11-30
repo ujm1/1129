@@ -35,29 +35,33 @@ public class BusGUI extends JFrame {//
 
     public void display(String str) {
 
-            int numIndex = str.indexOf("번");
-            String busNum = str.substring(0, numIndex); //100번:~~에서 100 뽑기;
-            if (str.contains(":")) {
-                int minuteIndex = str.indexOf("분");
-                int minuteNum = Integer.parseInt(str.substring(numIndex + 2, minuteIndex));
-                //~~번:3분~~에서 3 뽑기
-                if (minuteNum == 0) {
-                    displayBot(str);
-                } //0분일때(도착 예정 시간 1분 미만일때) 아래칸에 출력하기
-            } else if(!str.contains(":")) {displayBot(str);}
-            displayTop(str, busNum); //중복 확인 후 제거
+//            int numIndex = str.indexOf("번");
+        String busNum = str.substring(0, str.indexOf("번")); //100번:~~에서 100 뽑기;
+        if (str.contains(":")) {
+//                int minuteIndex = str.indexOf("분");
+            int minuteNum = Integer.parseInt(str.substring(str.indexOf("번") + 2, str.indexOf("분")));
+            //~~번:3분~~에서 3 뽑기
+            if (minuteNum == 0) {
+                displayBot(str, busNum);
+            } //0분일때(도착 예정 시간 1분 미만일때) 아래칸에 출력하기
+        } else if (!str.contains(":")) {
+            displayBot(str, busNum);
+        }       //100번 버스가 지나갔습니다~~ 처럼 콜론이 없을 때 아래칸에 출력
+        displayTop(str, str.substring(0, str.indexOf("번"))); //중복 확인 후 제거
 
     }
 
     public void displayTop(String str, String busNum) {
-        if (!listArea.getText().contains(busNum)) {
+        if (!listArea.getText().contains(busNum)) { //해당 버스 최초 추가
             listArea.append("\n" + str);
-        } else if (listArea.getText().contains(busNum)) {
+        } else if (listArea.getText().contains(busNum)) { //해당 버스의 이전 로그가 있을 때
             String[] lines = listArea.getText().split("\n");
             String resultText = "";
-            for (String line : lines) {
+            for (String line : lines) { //line:이전 로그
                 if (line.contains(busNum)) {
-                    line = str;
+                    if (str.contains("도착") | str.contains("지나")) {
+                        line = "";
+                    } else line = str; //버스 번호가 포함된 줄만 변경
                 }
                 resultText += line + "\n";
             }
@@ -65,16 +69,19 @@ public class BusGUI extends JFrame {//
             listArea.setText(resultText);
         }
     }
-            //0분이고 : 있을때 : 100번:0분 10초
-    public void displayBot(String str) {
-        if (!almostArea.getText().contains(busNum)) {
+
+    //0분이고 : 있을때 : 100번:0분 10초
+    public void displayBot(String str, String busNum) {
+        if (!almostArea.getText().contains(busNum)) { //해당 버스 최초 추가
             almostArea.append("\n" + busNum);
-        } else if (almostArea.getText().contains(busNum)) {
+        } else if (almostArea.getText().contains(busNum)) { //해당 버스의 이전 로그가 있을 때
             String[] lines = almostArea.getText().split("\n");
             String resultText = "";
-            for (String line : lines) {
+            for (String line : lines) { //line:이전 로그
                 if (line.contains(busNum)) {
-                    line = busNum;
+                    if (str.contains("도착") | str.contains("지나")) {
+                        line = "";
+                    } else line = str; //버스 번호가 포함된 줄만 변경
                 }
                 resultText += line + "\n";
             }
