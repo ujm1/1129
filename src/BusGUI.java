@@ -20,7 +20,7 @@ public class BusGUI extends JFrame {//
         this.setLayout(new GridLayout(2, 1));
         this.setLocationRelativeTo(null); //화면 중앙에 표시
 //        jpanel = new JPanel(new GridLayout(2, 1));
-        listArea = new JTextArea("버스 현황\n100번\n200번");
+        listArea = new JTextArea("버스 현황");
         almostArea = new JTextArea("잠시 후 도착");
 //        jpanel.add(listArea);
 //        jpanel.add(almostArea);
@@ -34,41 +34,38 @@ public class BusGUI extends JFrame {//
     }
 
     public void display(String str) {
-        int numIndex=str.indexOf("번");
+        int numIndex = str.indexOf("번");
         String busNum = str.substring(0, numIndex); //100번:~~에서 100 뽑기;
         if (str.contains(":")) {
-            delTopDuple(str, busNum); //중복 확인 후 제거
-
             int minuteIndex = str.indexOf("분");
-            int minuteNum = Integer.parseInt(str.substring(numIndex+2, minuteIndex));
+            int minuteNum = Integer.parseInt(str.substring(numIndex + 2, minuteIndex));
             //~~번:3분~~에서 3 뽑기
             if (minuteNum == 0) {
-                almostArea.append("\n" + busNum);
+                displayBot(str, busNum);
             } //0분일때(도착 예정 시간 1분 미만일때) 아래칸에 출력하기
+        }
+        displayTop(str, busNum); //중복 확인 후 제거
+    }
 
-
-        } else if (!str.contains(":") && str != null) {
-            //~번 버스가 도착했습니다, ~번 버스가 지나갔습니다
-            delTopDuple(str, busNum);
-
+    public void displayTop(String str, String busNum) {
+        if (!listArea.getText().contains(busNum)) {
+            listArea.append("\n" + str);
+        } else if (listArea.getText().contains(busNum)) {
+            String[] lines = listArea.getText().split("\n");
+            String resultText = "";
+            for (String line : lines) {
+                if (line.contains(busNum)) {
+                    line = str;
+                }
+                resultText += line + "\n";
+            }
+            resultText = resultText.trim();
+            listArea.setText(resultText);
         }
     }
 
+    public void displayBot(String str, String busNum) {
 
-
-    public void delTopDuple(String str, String busNum) {
-        if (listArea!=null) {
-            String[] lines = listArea.getText().split("\n");
-            String resultText="";
-            for (String line : lines) {
-                if (line.contains(busNum)) {
-//                    line.replaceAll("");
-                    line=str;}
-                   resultText+= line+"\n";
-            } resultText = resultText.trim();
-//            String.join("\n", lines);
-            listArea.setText(resultText);
-        }
     }
 
 
