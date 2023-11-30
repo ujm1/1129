@@ -10,7 +10,7 @@ public class BusClient extends Thread {
     final static String SERVER_IP = "172.30.1.10";
     final static int SERVER_PORT = 36129;
     final static int SECOND = 5;
-                    //버스번호, 도착시간, 도착 후 다음 도착시간, 회차시간
+
     static void check(int number, int time, int nextTime, int turn) {
         Socket socket = null;
         BufferedWriter bw = null;
