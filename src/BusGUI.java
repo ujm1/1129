@@ -47,7 +47,7 @@ public class BusGUI extends JFrame {//
             } //0분일때(도착 예정 시간 1분 미만일때) 아래칸에 출력하기
 
         } else if (!str.contains(":")) {
-            displayBot(str, busNum);
+            clearBot(str, busNum);
         }
 
         //100번 버스가 지나갔습니다~~ 처럼 콜론이 없을 때 아래칸에 출력
@@ -72,7 +72,7 @@ public class BusGUI extends JFrame {//
         }
     }
 
-    //0분이고 : 있을때 : 100번:0분 10초
+    //0분이고 : 있을때 : 100번:0분 10초, 0분 1초
     public void displayBot(String str, String busNum) {
         if (!almostArea.getText().contains(busNum)) { //해당 버스 최초 추가
             almostArea.append("\n" + busNum);
@@ -81,9 +81,7 @@ public class BusGUI extends JFrame {//
             String resultText = "";
             for (String line : lines) { //line:이전 로그
                 if (line.contains(busNum)) {
-                    if (str.contains("도착") || str.contains("지나")|| str.contains("종료")) {
-                        line = "";
-                    } else line = busNum; //버스 번호가 포함된 줄만 변경
+                    line = busNum; //버스 번호가 포함된 줄만 변경
                 }
                 resultText += line + "\n";
             }
@@ -93,7 +91,16 @@ public class BusGUI extends JFrame {//
     }
 
     public void clearBot(String str, String busNum) {
-
+            String[] lines = almostArea.getText().split("\n");
+            String resultText = "";
+            for (String line : lines) { //line:이전 로그
+                if (line.contains(busNum)) {
+                        line = "";
+                }
+                resultText += line + "\n";
+            }
+            resultText = resultText.trim();
+            almostArea.setText(resultText);
     }
 
 
