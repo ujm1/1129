@@ -1,6 +1,7 @@
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 
 public class BusClient extends Thread {
@@ -8,7 +9,7 @@ public class BusClient extends Thread {
     final static int SERVER_PORT = 36129;
     final static int SECOND = 5;
 
-    static void check ( int number, int time){
+    static void check(int number, int time, int nextTime, int turn) {
         Socket socket = null;
         BufferedWriter bw = null;
 
@@ -17,37 +18,45 @@ public class BusClient extends Thread {
             System.out.println("소켓 연결");
 
             bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            Bus bus = new Bus(number, time);
-
-            while (true) {
-                String str1 = null;
-                String str2 = "";
+            Bus bus = new Bus(number, time, nextTime, turn);
+            String str = null;
+            while (bus.getTurn() >= 0) {
 
                 if (bus.getTime() > 0) {
-                    str1 = bus.getNumber() + "번:" + bus.getTime() / 60 + "분 "
+                    str = bus.getNumber() + "번:" + bus.getTime() / 60 + "분 "
                             + bus.getTime() % 60 + "초";
 
                 } else if (bus.getTime() == 0) {
-                    str1 = bus.getNumber() + "번 버스가 도착했습니다";
+                    str = bus.getNumber() + "번 버스가 도착했습니다";
                 } else if (bus.getTime() < 0) {
-                    str1 = bus.getNumber() + "번 버스가 지나갔습니다";
-                    bus.setTime(200);
+                    str = bus.getNumber() + "번 버스가 지나갔습니다";
+                    bus.setTime(bus.getNextTime());
+                    bus.setTurn(bus.getTurn() - 1);
                 }
 
-                bw.write(str1);
+                bw.write(str);
                 bw.newLine();
                 bw.flush();
                 bus.setTime(bus.getTime() - SECOND);
 
-
-
-                System.out.println(str1);
-
+                System.out.println(str);
 
                 Thread.sleep(SECOND * 1000);
             }
-        } catch (IOException | InterruptedException ioe) {
+            if (bus.getTurn() < 0) {
+                str = bus.getNumber() + "번 버스의 운행이 종료되었습니다";
+                bw.write(str);
+                bw.newLine();
+                bw.flush();
+                System.out.println(str);
+
+            }
+        } catch (ConnectException ce) {
+            System.out.println("서버가 열려있지 않음");
+        } catch (IOException ioe) {
             ioe.printStackTrace();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
         } finally {
             try {
                 if (bw != null) bw.close();

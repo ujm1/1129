@@ -34,17 +34,19 @@ public class BusGUI extends JFrame {//
     }
 
     public void display(String str) {
-        int numIndex = str.indexOf("번");
-        String busNum = str.substring(0, numIndex); //100번:~~에서 100 뽑기;
-        if (str.contains(":")) {
-            int minuteIndex = str.indexOf("분");
-            int minuteNum = Integer.parseInt(str.substring(numIndex + 2, minuteIndex));
-            //~~번:3분~~에서 3 뽑기
-            if (minuteNum == 0) {
-                displayBot(str, busNum);
-            } //0분일때(도착 예정 시간 1분 미만일때) 아래칸에 출력하기
-        }
-        displayTop(str, busNum); //중복 확인 후 제거
+
+            int numIndex = str.indexOf("번");
+            String busNum = str.substring(0, numIndex); //100번:~~에서 100 뽑기;
+            if (str.contains(":")) {
+                int minuteIndex = str.indexOf("분");
+                int minuteNum = Integer.parseInt(str.substring(numIndex + 2, minuteIndex));
+                //~~번:3분~~에서 3 뽑기
+                if (minuteNum == 0) {
+                    displayBot(str);
+                } //0분일때(도착 예정 시간 1분 미만일때) 아래칸에 출력하기
+            } else if(!str.contains(":")) {displayBot(str);}
+            displayTop(str, busNum); //중복 확인 후 제거
+
     }
 
     public void displayTop(String str, String busNum) {
@@ -63,9 +65,22 @@ public class BusGUI extends JFrame {//
             listArea.setText(resultText);
         }
     }
-
-    public void displayBot(String str, String busNum) {
-
+            //0분이고 : 있을때 : 100번:0분 10초
+    public void displayBot(String str) {
+        if (!almostArea.getText().contains(busNum)) {
+            almostArea.append("\n" + busNum);
+        } else if (almostArea.getText().contains(busNum)) {
+            String[] lines = almostArea.getText().split("\n");
+            String resultText = "";
+            for (String line : lines) {
+                if (line.contains(busNum)) {
+                    line = busNum;
+                }
+                resultText += line + "\n";
+            }
+            resultText = resultText.trim();
+            almostArea.setText(resultText);
+        }
     }
 
 

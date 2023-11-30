@@ -22,13 +22,15 @@ public class BusServerThread extends Thread {
 
             while (true) {
                 String fromClient = br.readLine();
+                if(fromClient!=null) {
                 System.out.println(fromClient);
-                busGUI.display(fromClient);
+                busGUI.display(fromClient);}
 
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
-        } finally {
+        }
+        finally {
             try {
                 socket.close();
             } catch (IOException e) {
