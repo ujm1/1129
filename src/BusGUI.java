@@ -37,6 +37,7 @@ public class BusGUI extends JFrame {//
 
 //            int numIndex = str.indexOf("번");
         String busNum = str.substring(0, str.indexOf("번")); //100번:~~에서 100 뽑기;
+
         if (str.contains(":")) {
 //                int minuteIndex = str.indexOf("분");
             int minuteNum = Integer.parseInt(str.substring(str.indexOf("번") + 2, str.indexOf("분")));
@@ -44,9 +45,12 @@ public class BusGUI extends JFrame {//
             if (minuteNum == 0) {
                 displayBot(str, busNum);
             } //0분일때(도착 예정 시간 1분 미만일때) 아래칸에 출력하기
+
         } else if (!str.contains(":")) {
             displayBot(str, busNum);
-        }       //100번 버스가 지나갔습니다~~ 처럼 콜론이 없을 때 아래칸에 출력
+        }
+
+        //100번 버스가 지나갔습니다~~ 처럼 콜론이 없을 때 아래칸에 출력
         displayTop(str, str.substring(0, str.indexOf("번"))); //중복 확인 후 제거
 
     }
@@ -59,9 +63,7 @@ public class BusGUI extends JFrame {//
             String resultText = "";
             for (String line : lines) { //line:이전 로그
                 if (line.contains(busNum)) {
-                    if (str.contains("도착") | str.contains("지나")) {
-                        line = "";
-                    } else line = str; //버스 번호가 포함된 줄만 변경
+                    line = str; //버스 번호가 포함된 줄만 변경
                 }
                 resultText += line + "\n";
             }
@@ -79,15 +81,19 @@ public class BusGUI extends JFrame {//
             String resultText = "";
             for (String line : lines) { //line:이전 로그
                 if (line.contains(busNum)) {
-                    if (str.contains("도착") | str.contains("지나")) {
+                    if (str.contains("도착") || str.contains("지나")|| str.contains("종료")) {
                         line = "";
-                    } else line = str; //버스 번호가 포함된 줄만 변경
+                    } else line = busNum; //버스 번호가 포함된 줄만 변경
                 }
                 resultText += line + "\n";
             }
             resultText = resultText.trim();
             almostArea.setText(resultText);
         }
+    }
+
+    public void clearBot(String str, String busNum) {
+
     }
 
 
