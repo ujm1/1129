@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class BusServerThread extends Thread {
     private Socket socket;
@@ -30,7 +31,10 @@ public class BusServerThread extends Thread {
                 }
 
             }
-        } catch (IOException ioe) {
+        } catch (SocketException se) {
+            System.out.println("연결 끊김");
+        }
+        catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {
             try {
